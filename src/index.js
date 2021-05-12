@@ -9,11 +9,23 @@ import MapChart from './MapChart';
 function App() {
   const [content, setContent] = useState("");
   return (
-    <div>
-      <h2 className="model">Visualisation des données SISPEA</h2>
-      <MapChart setTooltipContent={setContent} />
-      <ReactTooltip>{content}</ReactTooltip>
-    </div>
+    <React.Fragment>
+      <div className="header">
+        <h2>Visualisation des données SISPEA</h2>
+      </div>
+      <div className="row">
+        <div className="column side"></div>
+        <div class="column middle">
+          <MapChart setTooltipContent={setContent} />
+          <ReactTooltip>{content}</ReactTooltip>
+        </div>
+        <div className="column side"></div>
+      </div>
+      <div className="footer">
+        <p>Réalisé par Perrin</p>
+        <a href="https://github.com/pgrandne/sispeal/">Voir le code source sur github</a>
+      </div>
+    </React.Fragment>
   );
 }
 

@@ -1,4 +1,6 @@
-import React, { memo } from "react";
+import React, { memo, useEffect, useState } from "react";
+import { csv } from "d3-fetch";
+import { scaleLinear } from "d3-scale";
 import {
   ComposableMap,
   Geographies,
@@ -6,27 +8,46 @@ import {
   ZoomableGroup
 } from "react-simple-maps";
 
-import "./index.css";
-
+const colorScale = scaleLinear()
+  .domain([0, 100])
+  .range(["#ffedea", "#ff5233"]);
 
 const geoUrl = "https://raw.githubusercontent.com/pgrandne/sispeal/main/src/Map/gadm36_FRA_1.json";
 
 const MapChart = ({ setTooltipContent }) => {
-  const position = { coordinates: [2.213749, 46.227638], zoom: 15 };
+  const position = {
+    coordinates: [2.213749, 46.227638],
+    zoom: 15,
+    maxZoom: 19,
+    minZoom: 12
+  };
+
+  const [data, setData] = useState([]);
+
+  useEffect(() => {
+    csv(`./rendement.csv`).then((data) => {
+      setData(data);
+    });
+  }, []);
 
   return (
-    <div className="model">
       <ComposableMap data-tip="" projectionConfig={{ scale: 170 }}>
         <ZoomableGroup
           zoom={position.zoom}
           center={position.coordinates}
+          maxZoom={position.maxZoom}
+          minZoom={position.minZoom}
         >
+                {data.length > 0 && (
           <Geographies geography={geoUrl}>
             {({ geographies }) =>
-              geographies.map(geo => (
+              geographies.map(geo => {
+                const d = data.find((s) => s.ISO3 === geo.properties.NAME_1);
+              return (
                 <Geography
                   key={geo.rsmKey}
                   geography={geo}
+                  fill={d ? colorScale(d["2017"]) : "#F5F4F6"}
                   onMouseEnter={() => {
                     const { NAME_1 } = geo.properties;
                     console.log(`${NAME_1}`);
@@ -50,12 +71,13 @@ const MapChart = ({ setTooltipContent }) => {
                     }
                   }}
                 />
-              ))
+              );
+                })
             }
           </Geographies>
+          )}
         </ZoomableGroup>
       </ComposableMap>
-    </div>
   );
 };
 
