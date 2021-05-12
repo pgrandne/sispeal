@@ -9,8 +9,8 @@ import {
 } from "react-simple-maps";
 
 const colorScale = scaleLinear()
-  .domain([0, 100])
-  .range(["#ffedea", "#ff5233"]);
+  .domain([50, 100])
+  .range(["red", "green"]);
 
 const geoUrl = "https://raw.githubusercontent.com/pgrandne/sispeal/main/src/Map/gadm36_FRA_1.json";
 
@@ -18,14 +18,14 @@ const MapChart = ({ setTooltipContent }) => {
   const position = {
     coordinates: [2.213749, 46.227638],
     zoom: 15,
-    maxZoom: 19,
-    minZoom: 12
+    maxZoom: 15,
+    minZoom: 15
   };
 
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    csv(`./rendement.csv`).then((data) => {
+    csv(`/rendement.csv`).then((data) => {
       setData(data);
     });
   }, []);
@@ -42,25 +42,21 @@ const MapChart = ({ setTooltipContent }) => {
           <Geographies geography={geoUrl}>
             {({ geographies }) =>
               geographies.map(geo => {
-                const d = data.find((s) => s.ISO3 === geo.properties.NAME_1);
+                const d = data.find((s) => s.Region === geo.properties.NAME_1);
               return (
                 <Geography
                   key={geo.rsmKey}
                   geography={geo}
-                  fill={d ? colorScale(d["2017"]) : "#F5F4F6"}
+                  fill={d ? colorScale(d["Rendement"]) : "#D6D6DA"}
                   onMouseEnter={() => {
                     const { NAME_1 } = geo.properties;
                     console.log(`${NAME_1}`);
-                    setTooltipContent(`${NAME_1}`);
+                    setTooltipContent(`${NAME_1} - Rendement de ${d["Rendement"]} % - ${d["Nombre"]} Collectivités `);
                   }}
                   onMouseLeave={() => {
                     setTooltipContent("");
                   }}
                   style={{
-                    default: {
-                      fill: "#D6D6DA",
-                      outline: "none"
-                    },
                     hover: {
                       fill: "#F53",
                       outline: "none"
