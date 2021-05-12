@@ -1,15 +1,25 @@
-import './App.css';
-import D3Example from './D3Example';
+import React from "react";
+import ReactDOM from "react-dom";
+import { ComposableMap, Geographies, Geography } from "react-simple-maps";
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <D3Example />
+import "./App.css";
 
-      </header>
-    </div>
-  );
-}
+const geoUrl = "https://raw.githubusercontent.com/zcreativelabs/react-simple-maps/master/topojson-maps/world-110m.json";
+
+const App = () => (
+  <div>
+    <h2 className="center">Visualisation des données de SISPEA</h2>
+    <ComposableMap>
+      <Geographies geography={geoUrl}>
+        {({ geographies }) =>
+          geographies.map(geo => <Geography key={geo.rsmKey} geography={geo} />)
+        }
+      </Geographies>
+    </ComposableMap>
+  </div>
+);
+
+const rootElement = document.getElementById("root");
+ReactDOM.render(<App />, rootElement);
 
 export default App;
