@@ -4,9 +4,11 @@ import ReactTooltip from "react-tooltip";
 
 import Header from './components/Header';
 import MapChart from './components/MapChart';
+import GraphChart from './components/GraphChart';
 import Footer from './components/Footer';
 
 import './index.css';
+
 
 
 
@@ -15,14 +17,12 @@ const App = () => {
   return (
     <React.Fragment>
       <Header />
-      <div className="row">
-        <div className="column side"></div>
-        <div className="column middle">
-          <MapChart setTooltipContent={setContent} />
-          <ReactTooltip>{content}</ReactTooltip>
-        </div>
-        <div className="column side"></div>
+      <div>
+        <MapChart setTooltipContent={setContent} />
+        <ReactTooltip>{content}</ReactTooltip>
       </div>
+      <hr />
+      <GraphChart />
       <Footer />
     </React.Fragment>
   );

@@ -4,12 +4,9 @@ import { scaleLinear } from "d3-scale";
 import {
   ComposableMap,
   Geographies,
-  Geography,
-  ZoomableGroup
+  Geography
 } from "react-simple-maps";
 import './Components.css';
-
-
 
 const colorScale = scaleLinear()
   .domain([50, 100])
@@ -18,13 +15,6 @@ const colorScale = scaleLinear()
 const geoUrl = "https://raw.githubusercontent.com/pgrandne/sispeal/main/public/files/carte_france.json";
 
 const MapChart = ({ setTooltipContent }) => {
-  const position = {
-    coordinates: [2.213749, 46.227638],
-    zoom: 15,
-    maxZoom: 15,
-    minZoom: 15
-  };
-
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -33,54 +23,55 @@ const MapChart = ({ setTooltipContent }) => {
     });
   }, []);
 
-  return (    <React.Fragment>
-          <h4 className="title">Carte des rendements par région en 2019</h4>
+  return (
+    <React.Fragment>
+      <h4 className="title">Carte des rendements par région en 2019</h4>
 
-
-      <ComposableMap data-tip="" projectionConfig={{ scale: 170 }}>
-        <ZoomableGroup
-          zoom={position.zoom}
-          center={position.coordinates}
-          maxZoom={position.maxZoom}
-          minZoom={position.minZoom}
-        >
-                {data.length > 0 && (
+      <ComposableMap className="cont-map"
+        data-tip=""
+        
+        projection="geoAzimuthalEqualArea"
+        projectionConfig={{
+          rotate: [-3, -46.5, 0],
+          scale: 3400
+        }}
+      >
+        {data.length > 0 && (
           <Geographies geography={geoUrl}>
             {({ geographies }) =>
               geographies.map(geo => {
-                const d = data.find((s) => s.Region === geo.properties.NAME_1);
-              return (
-                <Geography
-                  key={geo.rsmKey}
-                  geography={geo}
-                  fill={d ? colorScale(d["Rendement"]) : "#D6D6DA"}
-                  onMouseEnter={() => {
-                    const { NAME_1 } = geo.properties;
-                    console.log(`${NAME_1}`);
-                    setTooltipContent(`${NAME_1} - Rendement de ${d["Rendement"]} % - ${d["Nombre"]} Collectivités `);
-                  }}
-                  onMouseLeave={() => {
-                    setTooltipContent("");
-                  }}
-                  style={{
-                    hover: {
-                      fill: "#F53",
-                      outline: "none"
-                    },
-                    pressed: {
-                      fill: "#E42",
-                      outline: "none"
-                    }
-                  }}
-                />
-              );
-                })
+                const d = data.find((s) => s.region === geo.properties.NAME_1);
+                return (
+                  <Geography
+                    key={geo.rsmKey}
+                    geography={geo}
+                    fill={d ? colorScale(d["rendement"]) : "#D6D6DA"}
+                    onMouseEnter={() => {
+                      const { NAME_1 } = geo.properties;
+                      console.log(`${NAME_1}`);
+                      setTooltipContent(`${NAME_1} - Rendement de ${d["rendement"]} % - ${d["nombre"]} Collectivités `);
+                    }}
+                    onMouseLeave={() => {
+                      setTooltipContent("");
+                    }}
+                    style={{
+                      hover: {
+                        fill: "#F53",
+                        outline: "none"
+                      },
+                      pressed: {
+                        fill: "#E42",
+                        outline: "none"
+                      }
+                    }}
+                  />
+                );
+              })
             }
           </Geographies>
-          )}
-        </ZoomableGroup>
+        )}
       </ComposableMap>
-      </React.Fragment>
+    </React.Fragment>
   );
 };
 
