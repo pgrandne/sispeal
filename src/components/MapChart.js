@@ -7,12 +7,15 @@ import {
   Geography,
   ZoomableGroup
 } from "react-simple-maps";
+import './Components.css';
+
+
 
 const colorScale = scaleLinear()
   .domain([50, 100])
   .range(["red", "green"]);
 
-const geoUrl = "https://raw.githubusercontent.com/pgrandne/sispeal/main/src/Map/gadm36_FRA_1.json";
+const geoUrl = "https://raw.githubusercontent.com/pgrandne/sispeal/main/src/Map/carte_france.json";
 
 const MapChart = ({ setTooltipContent }) => {
   const position = {
@@ -25,12 +28,15 @@ const MapChart = ({ setTooltipContent }) => {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    csv(`/rendement.csv`).then((data) => {
+    csv(`/files/rendement.csv`).then((data) => {
       setData(data);
     });
   }, []);
 
-  return (
+  return (    <React.Fragment>
+          <h4 className="title">Carte des rendements par région en 2019</h4>
+
+
       <ComposableMap data-tip="" projectionConfig={{ scale: 170 }}>
         <ZoomableGroup
           zoom={position.zoom}
@@ -74,6 +80,7 @@ const MapChart = ({ setTooltipContent }) => {
           )}
         </ZoomableGroup>
       </ComposableMap>
+      </React.Fragment>
   );
 };
 
