@@ -15,7 +15,7 @@ const colorScale = scaleLinear()
   .domain([50, 100])
   .range(["red", "green"]);
 
-const geoUrl = "https://raw.githubusercontent.com/pgrandne/sispeal/main/src/Map/carte_france.json";
+const geoUrl = "https://raw.githubusercontent.com/pgrandne/sispeal/main/public/files/carte_france.json";
 
 const MapChart = ({ setTooltipContent }) => {
   const position = {
