@@ -6,6 +6,8 @@ import {
   Geographies,
   Geography
 } from "react-simple-maps";
+import ReactTooltip from "react-tooltip";
+
 import './Components.css';
 
 const colorScale = scaleLinear()
@@ -14,7 +16,10 @@ const colorScale = scaleLinear()
 
 const geoUrl = "https://raw.githubusercontent.com/pgrandne/sispeal/main/public/files/carte_france.json";
 
-const MapChartReg = ({ setTooltipContent }) => {
+const MapChartReg = () => {
+
+  const[content, setContent] =useState("");
+
   const [data, setData] = useState([]);
 
   useEffect(() => {
@@ -24,6 +29,8 @@ const MapChartReg = ({ setTooltipContent }) => {
   }, []);
 
   return (
+    <React.Fragment>
+    <ReactTooltip>{content}</ReactTooltip>
     <ComposableMap
       className="cont-map"
       data-tip=""
@@ -46,10 +53,10 @@ const MapChartReg = ({ setTooltipContent }) => {
                   onMouseEnter={() => {
                     const { NAME_1 } = geo.properties;
                     console.log(`${NAME_1}`);
-                    setTooltipContent(`${NAME_1} - Rendement de ${d["rendement"]} % - ${d["nombre"]} Collectivités `);
+                    setContent(`${NAME_1} - Rendement de ${d["rendement"]} % - ${d["nombre"]} Collectivités `);
                   }}
                   onMouseLeave={() => {
-                    setTooltipContent("");
+                    setContent("");
                   }}
                   style={{
                     hover: {
@@ -68,6 +75,7 @@ const MapChartReg = ({ setTooltipContent }) => {
         </Geographies>
       )}
     </ComposableMap>
+    </React.Fragment>
   );
 };
 
