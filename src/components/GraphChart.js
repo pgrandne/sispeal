@@ -25,7 +25,7 @@ const GraphChart = () => {
 
   return (
     <React.Fragment>
-      <h4 className="title">Evolution du rendement en France au fil des années (en m3 et %)</h4>
+      <h4 className="title">Evolution du rendement en France au fil des années (en Giga m3 et %)</h4>
       <ComposedChart className="cont-graph"
         width={900}
         height={500}
@@ -39,7 +39,7 @@ const GraphChart = () => {
       >
         <CartesianGrid strokeDasharray="1 1" />
         <XAxis dataKey="annee" />
-        <YAxis unit="m3" dataKey="consommation" yAxisId="left"/>
+        <YAxis unit="Gm3" yAxisId="left"/>
         <YAxis unit="%" dataKey="rendement" orientation="right" yAxisId="right" stroke="#ff7300"/>
         <Tooltip />
         <Legend />

@@ -11,7 +11,7 @@ import ReactTooltip from "react-tooltip";
 import './Components.css';
 
 const colorScale = scaleLinear()
-  .domain([0, 100])
+  .domain([50, 100])
   .range(["red", "green"]);
 
 
@@ -55,7 +55,7 @@ const MapChartDep = () => {
                     onMouseEnter={() => {
                       const { NAME_2 } = geo.properties;
                       console.log(`${NAME_2}`);
-                      setContent(`${NAME_2}- Rendement de ${d["rendement"]} % - ${d["nombre"]} Collectivités `);
+                      setContent(`${NAME_2}- Rendement de ${d["rendement"]} %`);
 
                     }}
                     onMouseLeave={() => {
